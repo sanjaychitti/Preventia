@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: preventia-backend
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:preventia}
+    username: ${DB_USER:preventia}
+    password: ${DB_PASSWORD:change_me_before_prod}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        default_schema: public
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    context-path: /api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+
+preventia:
+  jwt:
+    secret: ${JWT_SECRET:change-me-in-production-must-be-at-least-256-bits-long}
+    expiration-ms: 86400000        # 24 hours
+    recipient-token-expiration-ms: 7200000  # 2 hours
+
+  aws:
+    region: ${AWS_REGION:ap-south-1}
+    s3:
+      bucket-name: ${S3_BUCKET:preventia-prescriptions}
+      presigned-url-expiry-minutes: 15
+    endpoint-override: ${AWS_ENDPOINT_OVERRIDE:}  # for LocalStack in local dev
+
+  daily:
+    api-key: ${DAILY_API_KEY:}
+    api-url: https://api.daily.co/v1
+    room-privacy: private
+    room-expiry-seconds: 3600  # 1 hour
+
+  razorpay:
+    key-id: ${RAZORPAY_KEY_ID:}
+    key-secret: ${RAZORPAY_KEY_SECRET:}
+    currency: INR
+
+  # PRD §7 NFR: Dynamic currency detection via Geo-IP must resolve in <200ms
+  geo-ip:
+    service-url: ${GEO_IP_SERVICE_URL:https://ipapi.co}
+    timeout-ms: 200
+
+logging:
+  level:
+    com.preventia: INFO
+    org.springframework.security: WARN

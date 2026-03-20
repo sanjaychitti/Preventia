@@ -1,0 +1,57 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Node / Next.js / React Native
+node_modules/
+.next/
+out/
+dist/
+build/
+.expo/
+*.tsbuildinfo
+
+# Environment & secrets
+.env
+.env.local
+.env.production
+.env*.local
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.crt
+*.cer
+*.mobileprovision
+*.envrc
+secrets/
+**/secrets/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# AWS CDK
+infrastructure/cdk.out/
+
+# Test artifacts
+coverage/

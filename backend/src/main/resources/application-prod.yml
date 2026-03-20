@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    com.preventia: INFO
+
+management:
+  cloudwatch:
+    metrics:
+      export:
+        namespace: Preventia/Backend
+        enabled: true
+        step: 60s

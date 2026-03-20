@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: preventia-postgres
+    environment:
+      POSTGRES_DB: preventia
+      POSTGRES_USER: preventia
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-change_me_before_prod}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U preventia"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  localstack:
+    image: localstack/localstack:3
+    container_name: preventia-localstack
+    environment:
+      SERVICES: s3
+      DEFAULT_REGION: ap-south-1
+      AWS_DEFAULT_REGION: ap-south-1
+    ports:
+      - "4566:4566"
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - ./infrastructure/localstack/init-s3.sh:/etc/localstack/init/ready.d/init-s3.sh
+
+volumes:
+  postgres_data:
+  localstack_data:
